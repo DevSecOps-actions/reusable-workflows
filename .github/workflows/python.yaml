@@ -30,7 +30,7 @@ jobs:
         run: ls -l 
 
       - name: Read file into env
-        run: echo "APP_VERSION=$(cat version.txt)" >> $GITHUB_ENV
+        run: echo "APP_VERSION=$(cat version)" >> $GITHUB_ENV
 
       - name: Print the version
         run: echo "The version we just got is ${{ env.APP_VERSION }}"
