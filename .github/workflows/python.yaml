@@ -35,6 +35,9 @@ jobs:
       - name: Print the version
         run: echo "The version we just got is ${{ env.APP_VERSION }}"
 
+      - name: cd into files
+        run: cd files
+
       - name: Install dependencies
         run: pip3 install -r requirements.txt
 
