@@ -45,5 +45,8 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v5.1.1
         with:
           aws-region: us-east-1
-          aws-access-key-id: ${{ env.VERSION }}
-          aws-secret-access-key: ${{ env.VERSION }}
+          aws-access-key-id: ${{ inputs.secrets.aws-access-key-id }}
+          aws-secret-access-key: ${{ inputs.secrets.aws-secret-access-key }}
+
+      - name: push docker image 
+        run: docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/catalogue:${{ env.VERSION }}
