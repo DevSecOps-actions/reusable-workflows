@@ -41,12 +41,12 @@ jobs:
       - name: Docker build 
         run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/catalogue:${{ env.VERSION }} .
 
-      - name: Configure AWS Credentials 2
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5.1.1
         with:
           aws-region: us-east-1
-          aws-access-key-id: ${{ inputs.secrets.aws-access-key-id }}
-          aws-secret-access-key: ${{ inputs.secrets.aws-secret-access-key }}
+          aws-access-key-id: ${{ secrets.aws-access-key-id }}
+          aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
 
       - name: push docker image 
         run: docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/catalogue:${{ env.VERSION }}
