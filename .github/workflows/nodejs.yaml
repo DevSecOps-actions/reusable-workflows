@@ -1,0 +1,7 @@
+name: common
+on: [push]
+jobs:
+  ci:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the code 
