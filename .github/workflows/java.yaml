@@ -35,20 +35,20 @@ jobs:
       - name: Print the version
         run: echo "The version we just got is ${{ env.APP_VERSION }}"
 
-      # - name: Install dependencies
-      #   run: npm install 
+      - name: Install dependencies
+        run: mvn clean package
 
-      # - name: Docker build 
-      #   run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }} .
+      - name: Docker build 
+        run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }} .
 
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v5.1.1
-      #   with:
-      #     aws-region: us-east-1
-      #     aws-access-key-id: ${{ secrets.aws-access-key-id }}
-      #     aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5.1.1
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.aws-access-key-id }}
+          aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
 
-      # - name: push docker image 
-      #   run: | 
-      #     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 799345568171.dkr.ecr.us-east-1.amazonaws.com
-      #     docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }}
+      - name: push docker image 
+        run: | 
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 799345568171.dkr.ecr.us-east-1.amazonaws.com
+          docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }}
