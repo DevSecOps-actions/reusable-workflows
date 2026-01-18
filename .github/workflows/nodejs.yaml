@@ -1,7 +1,33 @@
 name: common
-on: [push]
+on:
+  workflow_call:
+    inputs:
+      Project:
+        description: "Enter your project name"
+        required: true
+        type: string
+      Application:
+        description: "Enter your App name"
+        required: true
+        type: string
+      app_type:
+        description: "Enter your app type"
+        required: true
+        type: string
+    secrets:
+      aws-access-key-id:
+        required: true
+      aws-secret-access-key:
+        required: true
 jobs:
   ci:
     runs-on: self-hosted
     steps:
-      - name: Checkout the code 
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: display files
+        run: ls -l 
+
+      - name: read ${{ inputs.app_type }} version 
+        run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_ENV
