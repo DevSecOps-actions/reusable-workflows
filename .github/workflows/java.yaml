@@ -39,7 +39,7 @@ jobs:
         run: mvn clean package
 
       - name: Docker build 
-        run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }} .
+        run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.APP_VERSION }} .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5.1.1
