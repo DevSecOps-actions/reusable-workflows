@@ -39,7 +39,7 @@ jobs:
         run: npm install 
 
       - name: Docker build 
-        run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/catalogue:${{ env.VERSION }} .
+        run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }} .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5.1.1
@@ -51,4 +51,4 @@ jobs:
       - name: push docker image 
         run: | 
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 799345568171.dkr.ecr.us-east-1.amazonaws.com
-          docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/catalogue:${{ env.VERSION }}
+          docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }}
