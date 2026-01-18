@@ -37,3 +37,13 @@ jobs:
 
       - name: Install dependencies
         run: npm install 
+
+      - name: Docker build 
+        run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/catalogue:${{ env.VERSION }}
+
+      - name: Configure AWS Credentials 2
+        uses: aws-actions/configure-aws-credentials@v5.1.1
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ env.VERSION }}
+          aws-secret-access-key: ${{ env.VERSION }}
