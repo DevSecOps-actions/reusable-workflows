@@ -35,11 +35,8 @@ jobs:
       - name: Print the version
         run: echo "The version we just got is ${{ env.APP_VERSION }}"
 
-      - name: cd into files
-        run: cd files
-
       - name: Install dependencies
-        run: pip3 install -r requirements.txt
+        run: pip3 install -r files/requirements.txt
 
       - name: Docker build 
         run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.APP_VERSION }} .
