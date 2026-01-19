@@ -22,6 +22,8 @@ on:
 jobs:
   ci:
     runs-on: self-hosted
+    outputs:
+      appVersion: ${{ steps.package-version.outputs.VERSION }}
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
@@ -30,16 +32,17 @@ jobs:
         run: ls -l 
 
       - name: read ${{ inputs.app_type }} version 
-        run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_ENV
+        id: package-version
+        run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
 
       - name: print app version
-        run: echo "print version ${{ env.VERSION }}"
+        run: echo "print version ${{ steps.package-version.outputs.VERSION }}"
 
       - name: Install dependencies
         run: npm install 
 
       - name: Docker build 
-        run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }} .
+        run: docker build -t 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ steps.package-version.outputs.VERSION }} .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5.1.1
@@ -51,11 +54,13 @@ jobs:
       - name: push docker image 
         run: | 
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 799345568171.dkr.ecr.us-east-1.amazonaws.com
-          docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ env.VERSION }}
+          docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ steps.package-version.outputs.VERSION }}
 
   cd:
     runs-on: self-hosted
     needs: ci
+    env: 
+      appVersion: ${{ needs.ci.outputs.appVersion }}
     steps:
       - name: checkout catalogue-deploy repo
         uses: actions/checkout@v4
@@ -78,4 +83,4 @@ jobs:
           kubectl get nodes
 
       - name: deploy ${{ inputs.Application }}
-        run: helm upgrade --install ${{ inputs.Application }} -f values.yaml --set deployment.imageVersion=${{ env.VERSION }} .
+        run: helm upgrade --install ${{ inputs.Application }} -f values.yaml --set deployment.imageVersion=${{ env.appVersion }} .
