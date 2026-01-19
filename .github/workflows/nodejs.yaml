@@ -54,7 +54,7 @@ jobs:
       - name: push docker image 
         run: | 
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 799345568171.dkr.ecr.us-east-1.amazonaws.com
-          docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Application }}:${{ steps.package-version.outputs.VERSION }}
+          docker push 799345568171.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.Project }}/${{ inputs.Application }}:${{ steps.package-version.outputs.VERSION }}
 
   cd:
     runs-on: self-hosted
