@@ -83,4 +83,4 @@ jobs:
           kubectl get nodes
 
       - name: deploy ${{ inputs.Application }}
-        run: helm upgrade --install ${{ inputs.Application }} -f values.yaml --set deployment.imageVersion=${{ env.appVersion }} .
+        run: helm upgrade --install ${{ inputs.Application }} -f values-dev.yaml --set deployment.imageVersion=${{ env.appVersion }} .
